@@ -333,9 +333,26 @@ AnimatedVisualPlayer::~AnimatedVisualPlayer()
 
 void AnimatedVisualPlayer::OnLoaded(winrt::IInspectable const& /*sender*/, winrt::RoutedEventArgs const& /*args*/)
 {
-    // Not put this line in the constructor for it causes QueryInterface in RuntimeClassHelpers.h
-    // is hit, for this would crash in a scenario where a C# client tries to derive from AnimatedVisualPlayer.
+    //
+    // Do initialization here rather than in the constructor because when the
+    // constructor is called the outer object is not fully initialized.
+    //
+    // Any initialization that can call back into the outer object MUST be
+    // done here rather than the constructor.
+    //
+    // Other initialization can be done here too, so rather than having to 
+    // guess whether an initialization call calls back into the outer, just 
+    // put most of the initialization here.
+    //
+
+    // Calls back into the outer - must be done OnLoaded rather than in the constructor.
     winrt::ElementCompositionPreview::SetElementChildVisual(*this, m_rootVisual);
+
+    // Set the background for AnimatedVisualPlayer to ensure it will be visible to
+    // hit-testing. XAML does not hit test anything that has a null background.
+    // Set here rather than in the constructor so we don't have to worry about it
+    // calling back into the outer.
+    Background(winrt::SolidColorBrush(winrt::Colors::Transparent()));
 
     if (m_isUnloaded)
     {
