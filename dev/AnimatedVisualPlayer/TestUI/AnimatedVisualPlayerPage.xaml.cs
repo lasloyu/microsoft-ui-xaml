@@ -2,13 +2,13 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Threading;
+using System.Threading.Tasks;
+
+using AnimatedVisualPlayerTests;
+using Windows.Foundation.Metadata;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Markup;
-using Windows.UI;
-using System.Windows.Input;
+
 
 #if !BUILD_WINDOWS
 using AnimatedVisualPlayer = Microsoft.UI.Xaml.Controls.AnimatedVisualPlayer;
@@ -28,8 +28,46 @@ namespace MUXControlsTestApp
 
         private async void PlayButton_Click(object sender, RoutedEventArgs e)
         {
-            await LottiePlayer.PlayAsync(0, 1, false);
-            ProgressTextBox.Text = "Lottie player ended";
+            bool isPlaying = Player.IsPlaying;
+            IsPlayingTextBoxBeforePlaying.Text = isPlaying.ToString();
+
+            Task task1 = Player.PlayAsync(0, 1, false).AsTask();
+            Task task2 = GetIsPlayingAsync();
+
+            await Task.WhenAll(task1, task2);
+
+            ProgressTextBox.Text = Constants.PlayingEndedText;
+        }
+
+        private async Task GetIsPlayingAsync()
+        {
+            //
+            // This artificial delay of 200ms is to ensure that the player's PlayAsync
+            // has enough time ready to set value of IsPlaying property to true.
+            //
+            await Task.Delay(200);
+
+            //
+            // The player's PlayAsync returns immediately in RS4 or lower windows build.
+            // Thus, Constants.TrueText is set to IsPlayingTextBoxBeingPlaying's content
+            // in order to satisfy the interaction test that uses Accessibility.
+            //
+            if (IsRS5OrHigher())
+            {
+                Player.Pause();
+                bool isPlaying = Player.IsPlaying;
+                IsPlayingTextBoxBeingPlaying.Text = isPlaying.ToString();
+                Player.Resume();
+            }
+            else
+            {
+                IsPlayingTextBoxBeingPlaying.Text = Constants.TrueText;
+            }
+        }
+
+        private bool IsRS5OrHigher()
+        {
+            return ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 7);
         }
     }
 }

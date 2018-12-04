@@ -131,6 +131,8 @@ void AnimatedVisualPlayer::AnimationPlay::Start()
             // Indicate that nothing else is going into the batch.
             m_batch.End();
         }
+
+        m_owner.IsPlaying(true);
     }
 }
 

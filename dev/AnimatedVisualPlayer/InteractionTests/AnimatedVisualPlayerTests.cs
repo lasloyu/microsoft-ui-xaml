@@ -3,6 +3,7 @@
 
 using System;
 
+using AnimatedVisualPlayerTests;
 using Common;
 using Windows.UI.Xaml.Tests.MUXControls.InteractionTests.Infra;
 using Windows.UI.Xaml.Tests.MUXControls.InteractionTests.Common;
@@ -57,27 +58,42 @@ namespace Windows.UI.Xaml.Tests.MUXControls.InteractionTests
         {
             using (var setup = new TestSetupHelper("AnimatedVisualPlayer Tests"))
             {
-                const string strEnded = "Lottie player ended";
-                var textBox = FindElement.ByName<Edit>("ProgressTextBox");
+                var progressTextBox = FindElement.ByName<Edit>("ProgressTextBox");
+                var isPlayingTextBoxBeforePlaying = FindElement.ByName<Edit>("IsPlayingTextBoxBeforePlaying");
+                var isPlayingTextBoxBeingPlaying = FindElement.ByName<Edit>("IsPlayingTextBoxBeingPlaying");
                 var playButton = FindElement.ByName<Button>("PlayButton");
 
-                if (playButton != null && textBox != null)
+                if (playButton != null &&
+                    progressTextBox != null &&
+                    isPlayingTextBoxBeforePlaying != null &&
+                    isPlayingTextBoxBeingPlaying != null)
                 {
-                    Log.Comment(textBox.Value);
-                    using (var propertyChangedEventWaiter = new PropertyChangedEventWaiter(textBox, UIProperty.Get("Value.Value")))
+                    using (var progressTextBoxWaiter = new PropertyChangedEventWaiter(progressTextBox, UIProperty.Get("Value.Value")))
                     {
-                        // Not click the play button until an event waiter is started for race contention issue.
-                        // Where test might be too slow to catch the event change moment from UI lottie player running.
                         playButton.Click();
-                        Log.Comment("Wait until lottie player ending.");
-                        propertyChangedEventWaiter.Wait();
-                        Log.Comment("Text property change event fired");
-                        Verify.AreEqual(strEnded, textBox.Value);
+
+                        Log.Comment("Wait until AnimatedVisualPlayer ends.");
+                        progressTextBoxWaiter.Wait();
+                        Log.Comment("EventWaiter of progressTextBox is raised.");
+
+                        Log.Comment("Value of isPlayingTextBoxBeforePlaying: \"{0}\".", isPlayingTextBoxBeforePlaying.Value);
+                        Verify.AreEqual(Constants.FalseText, isPlayingTextBoxBeforePlaying.Value);
+
+                        //
+                        // isPlayingTextBoxBeingPlaying value is supposed to be updated
+                        // inside the event handler function of Click for playButton in
+                        // the UI test.
+                        //
+                        Log.Comment("Value of isPlayingTextBoxBeingPlaying: \"{0}\".", isPlayingTextBoxBeingPlaying.Value);
+                        Verify.AreEqual(Constants.TrueText, isPlayingTextBoxBeingPlaying.Value);
+
+                        Log.Comment("Value of progressTextBox: \"{0}\".", progressTextBox.Value);
+                        Verify.AreEqual(Constants.PlayingEndedText, progressTextBox.Value);
                     }
                 }
                 else
                 {
-                    Verify.Fail("Either PlayButton or ProgresstextBox is not found.");
+                    Verify.Fail("PlayButton or any other UIElement is not found.");
                 }
             }
         }

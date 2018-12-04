@@ -22,11 +22,22 @@
                 AutomationProperties.Name="ProgressTextBox"
                 Text="None"
                 RelativePanel.Below="PlayButton"/>
+            <TextBox x:Name="IsPlayingTextBoxBeforePlaying"
+                IsEnabled="False"
+                AutomationProperties.Name="IsPlayingTextBoxBeforePlaying"
+                Text="None"
+                RelativePanel.Below="ProgressTextBox"/>
+            <TextBox x:Name="IsPlayingTextBoxBeingPlaying"
+                IsEnabled="False"
+                AutomationProperties.Name="IsPlayingTextBoxBeingPlaying"
+                Text="None"
+                RelativePanel.Below="IsPlayingTextBoxBeforePlaying"/>
             <controls:AnimatedVisualPlayer
-                x:Name="LottiePlayer"
-                AutomationProperties.Name="LottiePlayer"
+                x:Name="Player"
+                AutomationProperties.Name="Player"
                 AutomationProperties.LabeledBy="{Binding ElementName=ProgressTextBox}"
-                RelativePanel.AlignHorizontalCenterWithPanel="True">
+                RelativePanel.AlignHorizontalCenterWithPanel="True"
+                AutoPlay="False">
                 <lotties:LottieLogo/>
             </controls:AnimatedVisualPlayer>
         </RelativePanel>

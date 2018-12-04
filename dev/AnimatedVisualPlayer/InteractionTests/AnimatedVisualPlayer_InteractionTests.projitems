@@ -10,5 +10,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)AnimatedVisualPlayerTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\inc\Constants.cs" />
   </ItemGroup>
 </Project>
