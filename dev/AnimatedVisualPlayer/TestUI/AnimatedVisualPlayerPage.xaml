@@ -32,6 +32,24 @@
                 AutomationProperties.Name="IsPlayingTextBoxBeingPlaying"
                 Text="None"
                 RelativePanel.Below="IsPlayingTextBoxBeforePlaying"/>
+            <Button x:Name="ToZeroKeyframeAnimationPlayButton"
+                AutomationProperties.Name="ToZeroKeyframeAnimationPlayButton"
+                Click="ToZeroKeyframeAnimationPlayButton_Click"
+                RelativePanel.Below="IsPlayingTextBoxBeingPlaying"/>
+            <TextBox x:Name="ToZeroKeyframeAnimationProgressTextBox"
+                IsEnabled="False"
+                AutomationProperties.Name="ToZeroKeyframeAnimationProgressTextBox"
+                Text="None"
+                RelativePanel.Below="ToZeroKeyframeAnimationPlayButton"/>
+            <Button x:Name="FromOneKeyframeAnimationPlayButton"
+                AutomationProperties.Name="FromOneKeyframeAnimationPlayButton"
+                Click="FromOneKeyframeAnimationPlayButton_Click"
+                RelativePanel.Below="ToZeroKeyframeAnimationProgressTextBox"/>
+            <TextBox x:Name="FromOneKeyframeAnimationProgressTextBox"
+                IsEnabled="False"
+                AutomationProperties.Name="FromOneKeyframeAnimationProgressTextBox"
+                Text="None"
+                RelativePanel.Below="FromOneKeyframeAnimationPlayButton"/>
             <controls:AnimatedVisualPlayer
                 x:Name="Player"
                 AutomationProperties.Name="Player"

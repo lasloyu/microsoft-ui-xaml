@@ -814,6 +814,24 @@ winrt::IAsyncAction AnimatedVisualPlayer::PlayAsync(double fromProgress, double 
 
     CompleteCurrentPlay();
 
+    // Adjust for the case where there is a segment that
+    // goes from [fromProgress..0] where m_fromProgress > 0. 
+    // This is equivalent to [fromProgress..1], and by setting
+    // toProgress to 1 it saves us from generating extra key frames.
+    if (toProgress == 0 && fromProgress > 0)
+    {
+        toProgress = 1;
+    }
+
+    // Adjust for the case where there is a segment that
+    // goes from [1..toProgress] where toProgress > 0.
+    // This is equivalent to [0..toProgress], and by setting
+    // fromProgress to 0 it saves us from generating extra key frames.
+    if (toProgress > 0 && fromProgress == 1)
+    {
+        fromProgress = 0;
+    }
+
     // Create an AnimationPlay to hold the play information.
     // Keep a copy of the pointer because reentrance may cause the m_nowPlaying
     // value to change.

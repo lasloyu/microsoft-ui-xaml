@@ -72,7 +72,7 @@ namespace Windows.UI.Xaml.Tests.MUXControls.InteractionTests
                     {
                         playButton.Click();
 
-                        Log.Comment("Wait until AnimatedVisualPlayer ends.");
+                        Log.Comment("Waiting until AnimatedVisualPlayer playing ends.");
                         progressTextBoxWaiter.Wait();
                         Log.Comment("EventWaiter of progressTextBox is raised.");
 
@@ -95,6 +95,63 @@ namespace Windows.UI.Xaml.Tests.MUXControls.InteractionTests
                 {
                     Verify.Fail("PlayButton or any other UIElement is not found.");
                 }
+
+                ToZeroKeyframeAnimationAccessibilityTest();
+                FromOneKeyframeAnimationAccessibilityTest();
+            }
+        }
+
+        private void ToZeroKeyframeAnimationAccessibilityTest()
+        {
+            var toZeroKeyframeAnimationProgressTextBox = FindElement.ByName<Edit>("ToZeroKeyframeAnimationProgressTextBox");
+            var toZeroKeyframeAnimationPlayButton = FindElement.ByName<Button>("ToZeroKeyframeAnimationPlayButton");
+
+            if (toZeroKeyframeAnimationPlayButton != null &&
+                toZeroKeyframeAnimationProgressTextBox != null)
+            {
+                using (var toZeroAnimationTextBoxWaiter =
+                    new PropertyChangedEventWaiter(toZeroKeyframeAnimationProgressTextBox, UIProperty.Get("Value.Value")))
+                {
+                    toZeroKeyframeAnimationPlayButton.Click();
+
+                    Log.Comment("ToZeroKeyframeAnimationTextBoxWaiter: Waiting until AnimatedVisualPlayer playing ends.");
+                    toZeroAnimationTextBoxWaiter.Wait();
+                    Log.Comment("EventWaiter of toZeroKeyframeAnimationProgressTextBox is raised.");
+
+                    Log.Comment("Value of toZeroKeyframeAnimationProgressTextBox: \"{0}\".", toZeroKeyframeAnimationProgressTextBox.Value);
+                    Verify.AreEqual(Constants.PlayingEndedText, toZeroKeyframeAnimationProgressTextBox.Value);
+                }
+            }
+            else
+            {
+                Verify.Fail("toZeroKeyframeAnimationPlayButton or any other UIElement is not found.");
+            }
+        }
+
+        private void FromOneKeyframeAnimationAccessibilityTest()
+        {
+            var fromOneKeyframeAnimationProgressTextBox = FindElement.ByName<Edit>("FromOneKeyframeAnimationProgressTextBox");
+            var fromOneKeyframeAnimationPlayButton = FindElement.ByName<Button>("FromOneKeyframeAnimationPlayButton");
+
+            if (fromOneKeyframeAnimationPlayButton != null &&
+                fromOneKeyframeAnimationProgressTextBox != null)
+            {
+                using (var fromOneAnimationTextBoxWaiter =
+                    new PropertyChangedEventWaiter(fromOneKeyframeAnimationProgressTextBox, UIProperty.Get("Value.Value")))
+                {
+                    fromOneKeyframeAnimationPlayButton.Click();
+
+                    Log.Comment("FromOneKeyframeAnimationTextBoxWaiter: Waiting until AnimatedVisualPlayer playing ends.");
+                    fromOneAnimationTextBoxWaiter.Wait();
+                    Log.Comment("EventWaiter of fromOneKeyframeAnimationProgressTextBox is raised.");
+
+                    Log.Comment("Value of fromOneKeyframeAnimationProgressTextBox: \"{0}\".", fromOneKeyframeAnimationProgressTextBox.Value);
+                    Verify.AreEqual(Constants.PlayingEndedText, fromOneKeyframeAnimationProgressTextBox.Value);
+                }
+            }
+            else
+            {
+                Verify.Fail("fromOneKeyframeAnimationPlayButton or any other UIElement is not found.");
             }
         }
     }

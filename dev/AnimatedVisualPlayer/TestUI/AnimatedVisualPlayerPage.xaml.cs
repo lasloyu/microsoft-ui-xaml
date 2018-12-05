@@ -39,6 +39,20 @@ namespace MUXControlsTestApp
             ProgressTextBox.Text = Constants.PlayingEndedText;
         }
 
+        private async void ToZeroKeyframeAnimationPlayButton_Click(object sender, RoutedEventArgs e)
+        {
+            await Player.PlayAsync(0.35, 0, false);
+
+            ToZeroKeyframeAnimationProgressTextBox.Text = Constants.PlayingEndedText;
+        }
+
+        private async void FromOneKeyframeAnimationPlayButton_Click(object sender, RoutedEventArgs e)
+        {
+            await Player.PlayAsync(1, 0.35, false);
+
+            FromOneKeyframeAnimationProgressTextBox.Text = Constants.PlayingEndedText;
+        }
+
         private async Task GetIsPlayingAsync()
         {
             //
