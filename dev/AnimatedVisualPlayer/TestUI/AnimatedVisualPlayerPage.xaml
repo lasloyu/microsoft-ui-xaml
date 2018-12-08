@@ -50,6 +50,24 @@
                 AutomationProperties.Name="FromOneKeyframeAnimationProgressTextBox"
                 Text="None"
                 RelativePanel.Below="FromOneKeyframeAnimationPlayButton"/>
+            <Button x:Name="ReverseNegativePlaybackRateAnimationPlayButton"
+                AutomationProperties.Name="ReverseNegativePlaybackRateAnimationPlayButton"
+                Click="ReverseNegativePlaybackRateAnimationPlayButton_Click"
+                RelativePanel.Below="FromOneKeyframeAnimationProgressTextBox"/>
+            <TextBox x:Name="ReverseNegativePlaybackRateAnimationTextBox"
+                IsEnabled="False"
+                AutomationProperties.Name="ReverseNegativePlaybackRateAnimationTextBox"
+                Text="None"
+                RelativePanel.Below="ReverseNegativePlaybackRateAnimationPlayButton"/>
+            <Button x:Name="ReversePositivePlaybackRateAnimationPlayButton"
+                AutomationProperties.Name="ReversePositivePlaybackRateAnimationPlayButton"
+                Click="ReversePositivePlaybackRateAnimationPlayButton_Click"
+                RelativePanel.Below="ReverseNegativePlaybackRateAnimationTextBox"/>
+            <TextBox x:Name="ReversePositivePlaybackRateAnimationTextBox"
+                IsEnabled="False"
+                AutomationProperties.Name="ReversePositivePlaybackRateAnimationTextBox"
+                Text="None"
+                RelativePanel.Below="ReversePositivePlaybackRateAnimationPlayButton"/>
             <controls:AnimatedVisualPlayer
                 x:Name="Player"
                 AutomationProperties.Name="Player"

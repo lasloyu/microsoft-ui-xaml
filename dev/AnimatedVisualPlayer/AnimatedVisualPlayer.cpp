@@ -89,13 +89,6 @@ void AnimatedVisualPlayer::AnimationPlay::Start()
             animation.IterationCount(1);
         }
 
-        // RS4 has a problem with negative PlaybackRate (it will loop instead of playing once). Work around
-        // it by setting the direction to Reverse and using a positive PlaybackRate.
-        if (m_owner.PlaybackRate() < 0)
-        {
-            animation.Direction(winrt::AnimationDirection::Reverse);
-        }
-
         // Create a batch so that we can know when the animation finishes. This only
         // works for non-looping animations (the batch completes immediately
         // for looping animations).
@@ -115,9 +108,14 @@ void AnimatedVisualPlayer::AnimationPlay::Start()
         }
 
         // Set the playback rate.
-        // RS4 has a problem with negative PlaybackRate (it will loop instead of playing once). Work around
-        // it by setting the direction to Reverse and using a positive PlaybackRate.
-        SetPlaybackRate(static_cast<float>(std::abs(m_owner.PlaybackRate())));
+        auto playbackRate = static_cast<float>(m_owner.PlaybackRate());
+        m_controller.PlaybackRate(playbackRate);
+
+        if (playbackRate < 0)
+        {
+            // Play from end to beginning if playing in reverse.
+            m_controller.Progress(1);
+        }
 
         if (m_batch)
         {

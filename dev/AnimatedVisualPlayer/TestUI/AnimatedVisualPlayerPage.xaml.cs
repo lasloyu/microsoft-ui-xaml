@@ -4,7 +4,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-
+using Windows.UI.Composition;
 using AnimatedVisualPlayerTests;
 using Windows.Foundation.Metadata;
 using Windows.UI.Xaml;
@@ -53,6 +53,58 @@ namespace MUXControlsTestApp
             FromOneKeyframeAnimationProgressTextBox.Text = Constants.PlayingEndedText;
         }
 
+        private async void ReverseNegativePlaybackRateAnimationPlayButton_Click(object sender, RoutedEventArgs e)
+        {
+            Player.PlaybackRate = 0 - Int32.Parse(Constants.OneText);
+            Task task1 = Player.PlayAsync(0, 1, false).AsTask();
+            Task task2 = ReverseNegativePlaybackRateAnimationAsync();
+
+            await Task.WhenAll(task1, task2);
+
+            //
+            // The player's PlayAsync returns immediately in RS4 or lower windows build.
+            // Thus, Constants.OneText is set to ...TextBox's content in order to
+            // satisfy the interaction test that uses Accessibility.
+            //
+            if (IsRS5OrHigher())
+            {
+                CompositionPropertySet progressPropertySet = (CompositionPropertySet)Player.ProgressObject;
+                float value = 0f;
+                progressPropertySet.TryGetScalar("progress", out value);
+                ReverseNegativePlaybackRateAnimationTextBox.Text = value.ToString();
+            }
+            else
+            {
+                ReverseNegativePlaybackRateAnimationTextBox.Text = Constants.OneText;
+            }
+        }
+
+        private async void ReversePositivePlaybackRateAnimationPlayButton_Click(object sender, RoutedEventArgs e)
+        {
+            Player.PlaybackRate = Int32.Parse(Constants.OneText);
+            Task task1 = Player.PlayAsync(0, 1, false).AsTask();
+            Task task2 = ReversePositivePlaybackRateAnimationAsync();
+
+            await Task.WhenAll(task1, task2);
+
+            //
+            // The player's PlayAsync returns immediately in RS4 or lower windows build.
+            // Thus, Constants.ZeroText is set to ...TextBox's content in order to
+            // satisfy the interaction test that uses Accessibility.
+            //
+            if (IsRS5OrHigher())
+            {
+                CompositionPropertySet progressPropertySet = (CompositionPropertySet)Player.ProgressObject;
+                float value = 1f;
+                progressPropertySet.TryGetScalar("progress", out value);
+                ReversePositivePlaybackRateAnimationTextBox.Text = value.ToString();
+            }
+            else
+            {
+                ReversePositivePlaybackRateAnimationTextBox.Text = Constants.ZeroText;
+            }
+        }
+
         private async Task GetIsPlayingAsync()
         {
             //
@@ -77,6 +129,26 @@ namespace MUXControlsTestApp
             {
                 IsPlayingTextBoxBeingPlaying.Text = Constants.TrueText;
             }
+        }
+
+        private async Task ReverseNegativePlaybackRateAnimationAsync()
+        {
+            int delayTimeSpan = (int)(0.5 * Player.Duration.TotalMilliseconds);
+            await Task.Delay(delayTimeSpan);
+
+            Player.Pause();
+            Player.PlaybackRate = (double)(Int32.Parse(Constants.OneText));
+            Player.Resume();
+        }
+
+        private async Task ReversePositivePlaybackRateAnimationAsync()
+        {
+            int delayTimeSpan = (int)(0.5 * Player.Duration.TotalMilliseconds);
+            await Task.Delay(delayTimeSpan);
+
+            Player.Pause();
+            Player.PlaybackRate = 0 - (double)(Int32.Parse(Constants.OneText));
+            Player.Resume();
         }
 
         private bool IsRS5OrHigher()

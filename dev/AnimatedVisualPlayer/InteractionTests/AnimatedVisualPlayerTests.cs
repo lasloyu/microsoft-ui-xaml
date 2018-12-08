@@ -98,60 +98,110 @@ namespace Windows.UI.Xaml.Tests.MUXControls.InteractionTests
 
                 ToZeroKeyframeAnimationAccessibilityTest();
                 FromOneKeyframeAnimationAccessibilityTest();
+                ReverseNegativePlaybackRateAnimationAccessibilityTest();
+                ReversePositivePlaybackRateAnimationAccessibilityTest();
             }
         }
 
         private void ToZeroKeyframeAnimationAccessibilityTest()
         {
-            var toZeroKeyframeAnimationProgressTextBox = FindElement.ByName<Edit>("ToZeroKeyframeAnimationProgressTextBox");
-            var toZeroKeyframeAnimationPlayButton = FindElement.ByName<Button>("ToZeroKeyframeAnimationPlayButton");
+            var textBox = FindElement.ByName<Edit>("ToZeroKeyframeAnimationProgressTextBox");
+            var playButton = FindElement.ByName<Button>("ToZeroKeyframeAnimationPlayButton");
 
-            if (toZeroKeyframeAnimationPlayButton != null &&
-                toZeroKeyframeAnimationProgressTextBox != null)
+            if (playButton != null && textBox != null)
             {
-                using (var toZeroAnimationTextBoxWaiter =
-                    new PropertyChangedEventWaiter(toZeroKeyframeAnimationProgressTextBox, UIProperty.Get("Value.Value")))
+                using (var textBoxWaiter = new PropertyChangedEventWaiter(textBox, UIProperty.Get("Value.Value")))
                 {
-                    toZeroKeyframeAnimationPlayButton.Click();
+                    playButton.Click();
 
-                    Log.Comment("ToZeroKeyframeAnimationTextBoxWaiter: Waiting until AnimatedVisualPlayer playing ends.");
-                    toZeroAnimationTextBoxWaiter.Wait();
-                    Log.Comment("EventWaiter of toZeroKeyframeAnimationProgressTextBox is raised.");
+                    Log.Comment("ToZeroKeyframeAnimationAccessibilityTest: textBoxWaiter: Waiting until AnimatedVisualPlayer playing ends.");
+                    textBoxWaiter.Wait();
+                    Log.Comment("ToZeroKeyframeAnimationAccessibilityTest: EventWaiter of textBox is raised.");
 
-                    Log.Comment("Value of toZeroKeyframeAnimationProgressTextBox: \"{0}\".", toZeroKeyframeAnimationProgressTextBox.Value);
-                    Verify.AreEqual(Constants.PlayingEndedText, toZeroKeyframeAnimationProgressTextBox.Value);
+                    Log.Comment("ToZeroKeyframeAnimationAccessibilityTest: Value of textBox: \"{0}\".", textBox.Value);
+                    Verify.AreEqual(Constants.PlayingEndedText, textBox.Value);
                 }
             }
             else
             {
-                Verify.Fail("toZeroKeyframeAnimationPlayButton or any other UIElement is not found.");
+                Verify.Fail("ToZeroKeyframeAnimationAccessibilityTest: playButton or any other UIElement is not found.");
             }
         }
 
         private void FromOneKeyframeAnimationAccessibilityTest()
         {
-            var fromOneKeyframeAnimationProgressTextBox = FindElement.ByName<Edit>("FromOneKeyframeAnimationProgressTextBox");
-            var fromOneKeyframeAnimationPlayButton = FindElement.ByName<Button>("FromOneKeyframeAnimationPlayButton");
+            var textBox = FindElement.ByName<Edit>("FromOneKeyframeAnimationProgressTextBox");
+            var playButton = FindElement.ByName<Button>("FromOneKeyframeAnimationPlayButton");
 
-            if (fromOneKeyframeAnimationPlayButton != null &&
-                fromOneKeyframeAnimationProgressTextBox != null)
+            if (playButton != null && textBox != null)
             {
-                using (var fromOneAnimationTextBoxWaiter =
-                    new PropertyChangedEventWaiter(fromOneKeyframeAnimationProgressTextBox, UIProperty.Get("Value.Value")))
+                using (var textBoxWaiter = new PropertyChangedEventWaiter(textBox, UIProperty.Get("Value.Value")))
                 {
-                    fromOneKeyframeAnimationPlayButton.Click();
+                    playButton.Click();
 
-                    Log.Comment("FromOneKeyframeAnimationTextBoxWaiter: Waiting until AnimatedVisualPlayer playing ends.");
-                    fromOneAnimationTextBoxWaiter.Wait();
-                    Log.Comment("EventWaiter of fromOneKeyframeAnimationProgressTextBox is raised.");
+                    Log.Comment("FromOneKeyframeAnimationAccessibilityTest: textBoxWaiter: Waiting until AnimatedVisualPlayer playing ends.");
+                    textBoxWaiter.Wait();
+                    Log.Comment("FromOneKeyframeAnimationAccessibilityTest: EventWaiter of textBox is raised.");
 
-                    Log.Comment("Value of fromOneKeyframeAnimationProgressTextBox: \"{0}\".", fromOneKeyframeAnimationProgressTextBox.Value);
-                    Verify.AreEqual(Constants.PlayingEndedText, fromOneKeyframeAnimationProgressTextBox.Value);
+                    Log.Comment("FromOneKeyframeAnimationAccessibilityTest: Value of textBox: \"{0}\".", textBox.Value);
+                    Verify.AreEqual(Constants.PlayingEndedText, textBox.Value);
                 }
             }
             else
             {
-                Verify.Fail("fromOneKeyframeAnimationPlayButton or any other UIElement is not found.");
+                Verify.Fail("FromOneKeyframeAnimationAccessibilityTest: playButton or any other UIElement is not found.");
+            }
+        }
+
+        // Reverse backward playing using negative playback rate by setting playback rate to positive.
+        private void ReverseNegativePlaybackRateAnimationAccessibilityTest()
+        {
+            var textBox = FindElement.ByName<Edit>("ReverseNegativePlaybackRateAnimationTextBox");
+            var playButton = FindElement.ByName<Button>("ReverseNegativePlaybackRateAnimationPlayButton");
+
+            if (playButton != null && textBox != null)
+            {
+                using (var textBoxWaiter = new PropertyChangedEventWaiter(textBox, UIProperty.Get("Value.Value")))
+                {
+                    playButton.Click();
+
+                    Log.Comment("ReverseNegativePlaybackRateAnimationAccessibilityTest: textBoxWaiter: Waiting until AnimatedVisualPlayer playing ends.");
+                    textBoxWaiter.Wait();
+                    Log.Comment("ReverseNegativePlaybackRateAnimationAccessibilityTest: EventWaiter of textBox is raised.");
+
+                    Log.Comment("ReverseNegativePlaybackRateAnimationAccessibilityTest: Value of textBox: \"{0}\".", textBox.Value);
+                    Verify.AreEqual(Constants.OneText, textBox.Value);
+                }
+            }
+            else
+            {
+                Verify.Fail("ReverseNegativePlaybackRateAnimationAccessibilityTest: playButton or any other UIElement is not found.");
+            }
+        }
+
+        // Reverse forward playing using positive playback rate by setting playback rate to negative.
+        private void ReversePositivePlaybackRateAnimationAccessibilityTest()
+        {
+            var textBox = FindElement.ByName<Edit>("ReversePositivePlaybackRateAnimationTextBox");
+            var playButton = FindElement.ByName<Button>("ReversePositivePlaybackRateAnimationPlayButton");
+
+            if (playButton != null && textBox != null)
+            {
+                using (var textBoxWaiter = new PropertyChangedEventWaiter(textBox, UIProperty.Get("Value.Value")))
+                {
+                    playButton.Click();
+
+                    Log.Comment("ReversePositivePlaybackRateAnimationAccessibilityTest: textBoxWaiter: Waiting until AnimatedVisualPlayer playing ends.");
+                    textBoxWaiter.Wait();
+                    Log.Comment("EventWaiter of reversePositivePlaybackRateAnimationProgressTextBox is raised.");
+
+                    Log.Comment("ReversePositivePlaybackRateAnimationAccessibilityTest: Value of textBox: \"{0}\".", textBox.Value);
+                    Verify.AreEqual(Constants.ZeroText, textBox.Value);
+                }
+            }
+            else
+            {
+                Verify.Fail("ReversePositivePlaybackRateAnimationAccessibilityTest: playButton or any other UIElement is not found.");
             }
         }
     }
