@@ -68,12 +68,18 @@
                 AutomationProperties.Name="ReversePositivePlaybackRateAnimationTextBox"
                 Text="None"
                 RelativePanel.Below="ReversePositivePlaybackRateAnimationPlayButton"/>
+            <TextBox x:Name="HittestingTextBox"
+                IsEnabled="False"
+                AutomationProperties.Name="HittestingTextBox"
+                Text="None"
+                RelativePanel.Below="ReversePositivePlaybackRateAnimationTextBox"/>
             <controls:AnimatedVisualPlayer
                 x:Name="Player"
                 AutomationProperties.Name="Player"
                 AutomationProperties.LabeledBy="{Binding ElementName=ProgressTextBox}"
                 RelativePanel.AlignHorizontalCenterWithPanel="True"
-                AutoPlay="False">
+                AutoPlay="False"
+                PointerMoved="Player_PointerMoved">
                 <lotties:LottieLogo/>
             </controls:AnimatedVisualPlayer>
         </RelativePanel>

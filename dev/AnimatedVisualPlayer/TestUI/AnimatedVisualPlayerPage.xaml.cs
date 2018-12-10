@@ -104,7 +104,12 @@ namespace MUXControlsTestApp
                 ReversePositivePlaybackRateAnimationTextBox.Text = Constants.ZeroText;
             }
         }
-
+        
+        private void Player_PointerMoved(object sender, RoutedEventArgs e)
+        {
+            HittestingTextBox.Text = Constants.PointerMovedText;
+        }
+        
         private async Task GetIsPlayingAsync()
         {
             //

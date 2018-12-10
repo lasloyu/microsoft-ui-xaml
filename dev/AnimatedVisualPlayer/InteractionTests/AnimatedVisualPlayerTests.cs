@@ -22,6 +22,7 @@ using System.Windows.Automation;
 using MS.Internal.Mita.Foundation;
 using MS.Internal.Mita.Foundation.Controls;
 using MS.Internal.Mita.Foundation.Waiters;
+using Windows.Foundation.Metadata;
 #else
 using Microsoft.Windows.Apps.Test.Automation;
 using Microsoft.Windows.Apps.Test.Foundation;
@@ -100,6 +101,7 @@ namespace Windows.UI.Xaml.Tests.MUXControls.InteractionTests
                 FromOneKeyframeAnimationAccessibilityTest();
                 ReverseNegativePlaybackRateAnimationAccessibilityTest();
                 ReversePositivePlaybackRateAnimationAccessibilityTest();
+                HittestingAccessibilityTest();
             }
         }
 
@@ -203,6 +205,33 @@ namespace Windows.UI.Xaml.Tests.MUXControls.InteractionTests
             {
                 Verify.Fail("ReversePositivePlaybackRateAnimationAccessibilityTest: playButton or any other UIElement is not found.");
             }
+        }
+        
+        private void HittestingAccessibilityTest()
+        {
+            if (!IsRS5OrHigher())
+            {
+                return;
+            }
+
+            var textBox = FindElement.ByName<Edit>("HittestingTextBox");
+
+            using (var textBoxWaiter = new PropertyChangedEventWaiter(textBox, UIProperty.Get("Value.Value")))
+            {
+                TestEnvironment.Application.CoreWindow.Click();
+
+                Log.Comment("HittestingAccessibilityTest: Waiting until OnPointerMoved handler in UI test returns.");
+                textBoxWaiter.Wait();
+                Log.Comment("HittestingAccessibilityTest: EventWaiter of HittestingAccessibilityTest is raised.");
+
+                Log.Comment("HittestingAccessibilityTest: Value of textBox: \"{0}\".", textBox.Value);
+                Verify.AreEqual(Constants.PointerMovedText, textBox.Value);
+            }
+        }
+
+        private bool IsRS5OrHigher()
+        {
+            return ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 7);
         }
     }
 }
