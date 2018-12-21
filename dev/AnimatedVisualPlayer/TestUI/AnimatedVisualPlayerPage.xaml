@@ -1,0 +1,34 @@
+﻿<local:TestPage
+    x:Class="MUXControlsTestApp.AnimatedVisualPlayerPage"
+    x:Name="AnimatedVisualPlayerTestPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MUXControlsTestApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    xmlns:lotties="using:AnimatedVisuals"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <local:MyCommand x:Key="TestExecuteCommand" />
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="12">
+        <RelativePanel x:Name="ParentPanel">
+            <Button x:Name="PlayButton" AutomationProperties.Name="PlayButton" Click="PlayButton_Click"/>
+            <TextBox x:Name="ProgressTextBox"
+                IsEnabled="False"
+                AutomationProperties.Name="ProgressTextBox"
+                Text="None"
+                RelativePanel.Below="PlayButton"/>
+            <controls:AnimatedVisualPlayer
+                x:Name="LottiePlayer"
+                AutomationProperties.Name="LottiePlayer"
+                AutomationProperties.LabeledBy="{Binding ElementName=ProgressTextBox}"
+                RelativePanel.AlignHorizontalCenterWithPanel="True">
+                <lotties:LottieLogo/>
+            </controls:AnimatedVisualPlayer>
+        </RelativePanel>
+    </Grid>
+</local:TestPage>

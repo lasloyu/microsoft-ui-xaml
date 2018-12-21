@@ -33,7 +33,8 @@ namespace RuntimeProfiler
         ProfId_TextCommandBarFlyout,
         ProfId_RadioButtons,
         ProfId_RadioMenuFlyoutItem,
-        ProfId_Size
+        ProfId_Size,
+        ProfId_AnimatedVisualPlayer,
     } ProfilerClassId;
 
     void FireEvent(bool Suspend) noexcept;

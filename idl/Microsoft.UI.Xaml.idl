@@ -1,4 +1,4 @@
-#define WUXC_VERSION_RS3_CONTRACT  5
+﻿#define WUXC_VERSION_RS3_CONTRACT  5
 #define WUXC_VERSION_RS4_CONTRACT  6
 #define WUXC_VERSION_RS5_CONTRACT  7
 #define WUXC_VERSION_19H1_CONTRACT 8
@@ -251,6 +251,7 @@ namespace MU_XC_NAMESPACE
 #endif
 
 #ifndef BUILD_LEAN_MUX_FOR_THE_STORE_APP
+#include <AnimatedVisualPlayer\AnimatedVisualPlayer.idl>
 #include <ColorPicker\Common.idl>
 #include <ColorPicker\ColorPicker.idl>
 #include <CommandBarFlyout\CommandBarFlyout.idl>
@@ -306,6 +307,7 @@ namespace MU_XAP_NAMESPACE
 #include <NavigationView\NavigationViewItemAutomationPeer.idl>
 
 #ifndef BUILD_LEAN_MUX_FOR_THE_STORE_APP
+#include <AnimatedVisualPlayer\AnimatedVisualPlayerAutomationPeer.idl>
 #include <ColorPicker\ColorSpectrumAutomationPeer.idl>
 #include <ColorPicker\ColorPickerSliderAutomationPeer.idl>
 #include <MenuBar\MenuBarAutomationPeer.idl>

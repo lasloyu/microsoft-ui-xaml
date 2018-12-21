@@ -49,6 +49,10 @@ namespace CustomTasks
             DefaultValueMetadata["AcrylicBrush.TintOpacity"] = @"AcrylicBrush::sc_defaultTintOpacity";
             DefaultValueMetadata["AcrylicBrush.TintTransitionDuration"] = @"AcrylicBrush::sc_defaultTintTransitionDuration";
 
+            IncludedTypesMetadata["AnimatedVisualPlayer"] = true;
+            // AnimatedVisualPlayer -- NeedsPropChangedCallbackMetadata
+            // AnimatedVisualPlayer -- DefaultValueMetadata
+
             IncludedTypesMetadata["BitmapIconSource"] = true;
             // BitmapIconSource -- NeedsPropChangedCallbackMetadata
             // BitmapIconSource -- DefaultValueMetadata
@@ -176,6 +180,10 @@ namespace CustomTasks
             IncludedTypesMetadata["IconSource"] = true;
             // IconSource -- NeedsPropChangedCallbackMetadata
             // IconSource -- DefaultValueMetadata
+
+            IncludedTypesMetadata["IDynamicAnimatedVisualSource"] = true;
+            // IDynamicAnimatedVisualSource -- NeedsPropChangedCallbackMetadata
+            // IDynamicAnimatedVisualSource -- DefaultValueMetadata
 
             IncludedTypesMetadata["IRefreshInfoProvider"] = true;
             // IRefreshInfoProvider -- NeedsPropChangedCallbackMetadata
