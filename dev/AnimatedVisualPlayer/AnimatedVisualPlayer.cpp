@@ -8,15 +8,6 @@
 #include <synchapi.h>
 #include <winerror.h>
 
-GlobalDependencyProperty AnimatedVisualPlayer::s_AutoPlayProperty{ nullptr };
-GlobalDependencyProperty AnimatedVisualPlayer::s_DiagnosticsProperty{ nullptr };
-GlobalDependencyProperty AnimatedVisualPlayer::s_DurationProperty{ nullptr };
-GlobalDependencyProperty AnimatedVisualPlayer::s_FallbackContentProperty{ nullptr };
-GlobalDependencyProperty AnimatedVisualPlayer::s_IsAnimatedVisualLoadedProperty{ nullptr };
-GlobalDependencyProperty AnimatedVisualPlayer::s_IsPlayingProperty{ nullptr };
-GlobalDependencyProperty AnimatedVisualPlayer::s_PlaybackRateProperty{ nullptr };
-GlobalDependencyProperty AnimatedVisualPlayer::s_SourceProperty{ nullptr };
-GlobalDependencyProperty AnimatedVisualPlayer::s_StretchProperty{ nullptr};
 
 AnimatedVisualPlayer::AnimationPlay::AnimationPlay(
     AnimatedVisualPlayer& owner,
@@ -552,19 +543,6 @@ winrt::Size AnimatedVisualPlayer::ArrangeOverride(winrt::Size const& finalSize)
     return finalSize;
 }
 
-// Dependency properties
-void AnimatedVisualPlayer::ClearProperties()
-{
-    s_DiagnosticsProperty = nullptr;
-    s_DurationProperty = nullptr;
-    s_FallbackContentProperty = nullptr;
-    s_IsAnimatedVisualLoadedProperty = nullptr;
-    s_IsPlayingProperty = nullptr;
-    s_PlaybackRateProperty = nullptr;
-    s_SourceProperty = nullptr;
-    s_StretchProperty = nullptr;
-}
-
 winrt::DependencyProperty InitializeDp(
     _In_ wstring_view const& propertyNameString,
     _In_ wstring_view const& propertyTypeNameString,
@@ -583,187 +561,11 @@ winrt::DependencyProperty InitializeDp(
         propertyChangedCallback);
 }
 
-void AnimatedVisualPlayer::EnsureProperties()
-{
-    if (s_AutoPlayProperty)
-    {
-        // If one of the DependencyProperty's is initialized, they all are.
-        return;
-    }
-
-    s_AutoPlayProperty =
-        InitializeDp(
-            L"AutoPlay",
-            winrt::name_of<bool>(),
-            box_value(true),
-            winrt::PropertyChangedCallback(&AnimatedVisualPlayer::OnAutoPlayPropertyChanged));
-
-    s_DiagnosticsProperty =
-        InitializeDp(
-            L"Diagnostics",
-            winrt::name_of<winrt::IInspectable>(),
-            nullptr);   // initial value
-
-    s_DurationProperty =
-        InitializeDp(
-            L"Duration",
-            winrt::name_of<winrt::TimeSpan>(),
-            box_value(winrt::TimeSpan{ 0 }));
-
-    s_FallbackContentProperty =
-        InitializeDp(
-            L"FallbackContent",
-            winrt::name_of<winrt::DataTemplate>(),
-            nullptr,    // initial value
-            winrt::PropertyChangedCallback(&AnimatedVisualPlayer::OnFallbackContentPropertyChanged));
-
-    s_IsAnimatedVisualLoadedProperty =
-        InitializeDp(
-            L"IsAnimatedVisualLoaded",
-            winrt::name_of<bool>(),
-            box_value(false));
-
-    s_IsPlayingProperty =
-        InitializeDp(
-            L"IsPlaying",
-            winrt::name_of<bool>(),
-            box_value(false));
-
-    s_PlaybackRateProperty =
-        InitializeDp(
-            L"PlaybackRate",
-            winrt::name_of<double>(),
-            box_value(1.0),
-            winrt::PropertyChangedCallback(&AnimatedVisualPlayer::OnPlaybackRatePropertyChanged));
-
-    s_SourceProperty =
-        InitializeDp(
-            L"Source",
-            winrt::name_of<winrt::IAnimatedVisualSource>(),
-            nullptr,    // initial value
-            winrt::PropertyChangedCallback(&AnimatedVisualPlayer::OnSourcePropertyChanged));
-
-    s_StretchProperty =
-        InitializeDp(
-            L"Stretch",
-            winrt::name_of<winrt::Windows::UI::Xaml::Media::Stretch>(),
-            box_value(winrt::Stretch::Uniform),
-            winrt::PropertyChangedCallback(&AnimatedVisualPlayer::OnStretchPropertyChanged));
-}
-
-// Accessor for Diagnostics dependency property.
-winrt::IInspectable AnimatedVisualPlayer::Diagnostics()
-{
-    return GetValue(s_DiagnosticsProperty);
-}
-
-// Private mutator for Diagnostics dependency property.
-void AnimatedVisualPlayer::Diagnostics(winrt::IInspectable const& value)
-{
-    SetValue(s_DiagnosticsProperty, value);
-}
-
-// Accessor for Duration dependency property.
-winrt::TimeSpan AnimatedVisualPlayer::Duration()
-{
-    return unbox_value<winrt::TimeSpan>(GetValue(s_DurationProperty));
-}
-
-// Private mutator for Duration dependency property.
-void AnimatedVisualPlayer::Duration(winrt::TimeSpan const& value)
-{
-    SetValue(s_DurationProperty, box_value<winrt::TimeSpan>(value));
-}
-
-// Accessor for Source dependency property.
-winrt::IAnimatedVisualSource AnimatedVisualPlayer::Source()
-{
-    return safe_cast<winrt::IAnimatedVisualSource>(GetValue(s_SourceProperty));
-}
-
-// Mutator for Source dependency property.
-void AnimatedVisualPlayer::Source(winrt::IAnimatedVisualSource const& value)
-{
-    SetValue(s_SourceProperty, value);
-}
-
-// Accessor for FallbackContent dependency property.
-winrt::DataTemplate AnimatedVisualPlayer::FallbackContent()
-{
-    return safe_cast<winrt::DataTemplate>(GetValue(s_FallbackContentProperty));
-}
-
-// Mutator for FallbackContent dependency property.
-void AnimatedVisualPlayer::FallbackContent(winrt::DataTemplate const& value)
-{
-    SetValue(s_FallbackContentProperty, value);
-}
-
-// Accessor for AutoPlay dependency property.
-bool AnimatedVisualPlayer::AutoPlay()
-{
-    return unbox_value<bool>(GetValue(s_AutoPlayProperty));
-}
-
-// Mutator for AutoPlay dependency property.
-void AnimatedVisualPlayer::AutoPlay(bool value)
-{
-    SetValue(s_AutoPlayProperty, box_value(value));
-}
-
-// Accessor for IAnimatedVisualLoaded dependency property.
-bool AnimatedVisualPlayer::IsAnimatedVisualLoaded()
-{
-    return unbox_value<bool>(GetValue(s_IsAnimatedVisualLoadedProperty));
-}
-
-// Private mutator for IsAnimatedVisualLoaded dependency property.
-void AnimatedVisualPlayer::IsAnimatedVisualLoaded(bool value)
-{
-    SetValue(s_IsAnimatedVisualLoadedProperty, box_value(value));
-}
-
-// Accessor for IsPlaying dependency property.
-bool AnimatedVisualPlayer::IsPlaying()
-{
-    return unbox_value<bool>(GetValue(s_IsPlayingProperty));
-}
-
-// Private mutator for IsPlaying dependency property.
-void AnimatedVisualPlayer::IsPlaying(bool value)
-{
-    SetValue(s_IsPlayingProperty, box_value(value));
-}
-
-// Accessor for PlaybackRate dependency property.
-double AnimatedVisualPlayer::PlaybackRate()
-{
-    return unbox_value<double>(GetValue(s_PlaybackRateProperty));
-}
-
-// Mutator for PlaybackRate dependency property.
-void AnimatedVisualPlayer::PlaybackRate(double value)
-{
-    SetValue(s_PlaybackRateProperty, box_value(value));
-}
-
 // Accessor for ProgressObject property.
 // NOTE: This is not a dependency property because it never changes and is not useful for binding.
 winrt::CompositionObject AnimatedVisualPlayer::ProgressObject()
 {
     return m_progressPropertySet;
-}
-
-// Accessor for Stretch dependency property.
-winrt::Windows::UI::Xaml::Media::Stretch AnimatedVisualPlayer::Stretch()
-{
-    return unbox_value<winrt::Windows::UI::Xaml::Media::Stretch>(GetValue(s_StretchProperty));
-}
-
-// Mutator for Stretch dependency property.
-void AnimatedVisualPlayer::Stretch(winrt::Windows::UI::Xaml::Media::Stretch const& value)
-{
-    SetValue(s_StretchProperty, box_value(value));
 }
 
 // Pauses the currently playing animated visual, or does nothing if no play is underway.

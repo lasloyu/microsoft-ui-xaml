@@ -17,6 +17,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)AnimatedVisualPlayer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)AnimatedVisualPlayerAutomationPeer.h" />
     <ClCompile Include="$(MSBuildThisFileDirectory)AnimatedVisualPlayer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\Generated\AnimatedVisualPlayer.properties.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)AnimatedVisualPlayerAutomationPeer.cpp" />
   </ItemGroup>
   <ItemGroup>

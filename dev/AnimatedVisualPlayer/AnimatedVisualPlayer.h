@@ -7,30 +7,19 @@
 #include "common.h"
 
 #include "AnimatedVisualPlayer.g.h"
+#include "AnimatedVisualPlayer.properties.h"
 #include <winrt\Windows.UI.Xaml.Controls.h>
+
 
 // Derive from DeriveFromPanelHelper_base so that we get access to Children collection
 // in Panel. The Children collection holds the fallback content.
-struct AnimatedVisualPlayer final 
-    : ReferenceTracker<AnimatedVisualPlayer, DeriveFromPanelHelper_base, winrt::AnimatedVisualPlayer>
+struct AnimatedVisualPlayer final :
+    public ReferenceTracker<AnimatedVisualPlayer, DeriveFromPanelHelper_base, winrt::AnimatedVisualPlayer>,
+    public AnimatedVisualPlayerProperties
 {
     AnimatedVisualPlayer();
     ~AnimatedVisualPlayer();
-    winrt::IInspectable Diagnostics();
-    winrt::TimeSpan Duration();
-    winrt::IAnimatedVisualSource Source();
-    void Source(winrt::IAnimatedVisualSource const& value);
-    winrt::DataTemplate FallbackContent();
-    void FallbackContent(winrt::DataTemplate const& value);
-    bool AutoPlay();
-    void AutoPlay(bool value);
-    bool IsAnimatedVisualLoaded();
-    bool IsPlaying();
-    double PlaybackRate();
-    void PlaybackRate(double value);
     winrt::Composition::CompositionObject ProgressObject();
-    ::winrt::Windows::UI::Xaml::Media::Stretch Stretch();
-    void Stretch(::winrt::Windows::UI::Xaml::Media::Stretch const& value);
     void Pause();
     winrt::IAsyncAction PlayAsync(double fromProgress, double toProgress, bool looped);
     void Resume();
@@ -43,20 +32,6 @@ struct AnimatedVisualPlayer final
 
     // IUIElement / IUIElementOverridesHelper
     winrt::AutomationPeer OnCreateAutomationPeer();
-
-    static void ClearProperties();
-    static void EnsureProperties();
-
-    // Dependency properties
-    static winrt::DependencyProperty AutoPlayProperty() { return s_AutoPlayProperty; }
-    static winrt::DependencyProperty DiagnosticsProperty() { return s_DiagnosticsProperty; }
-    static winrt::DependencyProperty DurationProperty() { return s_DurationProperty; }
-    static winrt::DependencyProperty FallbackContentProperty() { return s_FallbackContentProperty; }
-    static winrt::DependencyProperty IsAnimatedVisualLoadedProperty() { return s_IsAnimatedVisualLoadedProperty; }
-    static winrt::DependencyProperty IsPlayingProperty() { return s_IsPlayingProperty; }
-    static winrt::DependencyProperty PlaybackRateProperty() { return s_PlaybackRateProperty; }
-    static winrt::DependencyProperty SourceProperty() { return s_SourceProperty; }
-    static winrt::DependencyProperty StretchProperty() { return s_StretchProperty; }
 
 private:
     //
@@ -105,11 +80,6 @@ private:
 
     void CompleteCurrentPlay();
 
-    void Diagnostics(winrt::IInspectable const& value);
-    void Duration(winrt::TimeSpan const& value);
-    void IsAnimatedVisualLoaded(bool value);
-    void IsPlaying(bool value);
-
     static void OnAutoPlayPropertyChanged(winrt::DependencyObject const& sender, winrt::DependencyPropertyChangedEventArgs const& args);
     void OnAutoPlayPropertyChanged(bool newValue);
 
@@ -136,18 +106,6 @@ private:
     void OnUnloaded(winrt::IInspectable const& sender, winrt::RoutedEventArgs const& args);
     void OnHiding();
     void OnUnhiding();
-
-    static GlobalDependencyProperty s_AutoPlayProperty;
-    static GlobalDependencyProperty s_DiagnosticsProperty;
-    static GlobalDependencyProperty s_DurationProperty;
-    static GlobalDependencyProperty s_FallbackContentProperty;
-    static GlobalDependencyProperty s_FromProgressProperty;
-    static GlobalDependencyProperty s_IsAnimatedVisualLoadedProperty;
-    static GlobalDependencyProperty s_IsPlayingProperty;
-    static GlobalDependencyProperty s_PlaybackRateProperty;
-    static GlobalDependencyProperty s_SourceProperty;
-    static GlobalDependencyProperty s_StretchProperty;
-    static GlobalDependencyProperty s_ToProgressProperty;
 
     //
     // Initialized by the constructor.
@@ -187,5 +145,3 @@ private:
     // unloaded) from later Loaded events.
     bool m_isUnloaded{ false };
 };
-
-CppWinRTActivatableClassWithDPFactory(AnimatedVisualPlayer);
