@@ -6,9 +6,9 @@
     /// </summary>
     internal static class Constants
     {
-        public const string FalseText = "False";
-        public const string PlayingEndedText = "AnimatedVisualPlayer playing ended";
+        public const string FalseText = "False";        
         public const string OneText = "1";
+        public const string PlayingEndedText = "AnimatedVisualPlayer playing ended";
         public const string PointerMovedText = "Pointer moved";
         public const string TrueText = "True";
         public const string ZeroText = "0";

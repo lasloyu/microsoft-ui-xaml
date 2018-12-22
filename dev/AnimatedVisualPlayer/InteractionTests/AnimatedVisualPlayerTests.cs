@@ -5,6 +5,7 @@ using System;
 
 using AnimatedVisualPlayerTests;
 using Common;
+using Windows.Foundation.Metadata;
 using Windows.UI.Xaml.Tests.MUXControls.InteractionTests.Infra;
 using Windows.UI.Xaml.Tests.MUXControls.InteractionTests.Common;
 
